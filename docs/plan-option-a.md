@@ -33,6 +33,13 @@ Docker reuses a cached layer when the `RUN` line text hasn't changed, so a cache
 ### 3. Tagging
 Don't reuse the `3.3.0` tag. Use `3.3.0-p1`, or a date suffix such as `3.3.0-20261005`, so the patched image can be told apart from upstream's.
 
+### 4. `deploy.yml`: required before anything is merged or pushed to the fork's `main`
+`deploy.yml` runs on every push to `main`, so update it first:
+- **Runner:** change `runs-on: bigger_linux` (No-IP's self-hosted runner) to `ubuntu-latest`. Otherwise the job waits in the queue forever, because no runner with that label exists for the fork.
+- **Image tags:** replace the `ghcr.io/noipcom/noip-duc:*` and `noipcom/noip-duc:*` tags with your own (e.g. `ghcr.io/tgcentral/noip-duc:*`). Pushing to `noipcom` would fail.
+  - If you drop Docker Hub, remove the `Login to Docker Hub` step too. Otherwise, add `DOCKERHUB_USERNAME`/`DOCKERHUB_TOKEN` secrets to the fork.
+- Enable Actions on the fork (they are disabled by default on new forks).
+
 ## Ongoing upkeep (the main drawback of Option A)
 The image is only clean as of its build date. New Debian CVEs will appear, so the image needs rebuilding on a schedule (e.g. a weekly `schedule:` cron trigger in the workflow) or by hand whenever Arcane flags something.
 
