@@ -20,8 +20,9 @@ RUN cargo build --release
 FROM debian:bookworm-slim
 ARG VERSION=3.3.0
 
-RUN apt update \
- && apt install -y --no-install-recommends ca-certificates \
+RUN apt-get update \
+ && apt-get upgrade -y \
+ && apt-get install -y --no-install-recommends ca-certificates \
  && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /tmp/noip-duc_${VERSION}/target/release/noip-duc /usr/bin
