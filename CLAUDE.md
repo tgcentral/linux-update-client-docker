@@ -27,7 +27,7 @@ docker compose up
 
 ## Release / CI
 
-- `.github/workflows/deploy.yml` runs on **every push to `main`** (and on `workflow_dispatch`) on `ubuntu-latest`. It builds `linux/amd64,linux/arm64,linux/arm/v7` with QEMU/Buildx using `pull: true` and `no-cache: true`, so the runtime stage's `apt-get upgrade` always picks up current Debian security fixes. It **pushes** to `ghcr.io/tgcentral/noip-duc` (this fork) as `:latest` and `:${VERSION}-${PATCH}` (e.g. `3.3.0-p1`). Docker Hub publishing was removed. Merging to `main` publishes images.
+- `.github/workflows/deploy.yml` runs on **every push to `main`**, on `workflow_dispatch`, and **weekly on a schedule** (Mondays 03:17 UTC) on `ubuntu-latest`. It builds `linux/amd64,linux/arm64,linux/arm/v7` with QEMU/Buildx using `pull: true` and `no-cache: true`, so the runtime stage's `apt-get upgrade` always picks up current Debian security fixes. It **pushes** to `ghcr.io/tgcentral/noip-duc` (this fork) as `:latest`, `:${VERSION}-${PATCH}` (e.g. `3.3.0-p1`) and a dated `:${VERSION}-YYYYMMDD` (UTC build date, e.g. `3.3.0-20261012`). Every build overwrites `:latest` and `:${VERSION}-${PATCH}`. The dated tag is only overwritten by another build on the same UTC day. Docker Hub publishing was removed. Merging to `main` publishes images.
 - The workflow does not pass `VERSION` as a build-arg. The tag comes from the workflow's `env.VERSION`, but the binary version comes from the Dockerfile `ARG VERSION` default.
 
 ## Bumping the DUC version

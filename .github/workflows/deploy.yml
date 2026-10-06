@@ -5,6 +5,9 @@ on:
     branches:
       - main
   workflow_dispatch:
+  schedule:
+    # Weekly rebuild to pick up Debian security fixes (Mondays 03:17 UTC)
+    - cron: '17 3 * * 1'
 
 env:
   VERSION: '3.3.0'
@@ -26,6 +29,10 @@ jobs:
         registry: ghcr.io
         username: ${{ github.repository_owner }}
         password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Set build date
+      id: date
+      run: echo "date=$(date -u +%Y%m%d)" >> "$GITHUB_OUTPUT"
 
     - name: set up qemu
       uses: docker/setup-qemu-action@v4
@@ -51,3 +58,4 @@ jobs:
         tags: |
           ghcr.io/tgcentral/noip-duc:latest
           ghcr.io/tgcentral/noip-duc:${{ env.VERSION }}-${{ env.PATCH }}
+          ghcr.io/tgcentral/noip-duc:${{ env.VERSION }}-${{ steps.date.outputs.date }}
