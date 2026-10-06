@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main
+    # Only files that affect the image; docs/compose/env changes don't rebuild
+    paths:
+      - Dockerfile
+      - .github/workflows/deploy.yml
   workflow_dispatch:
   schedule:
     # Weekly rebuild to pick up Debian security fixes (Mondays 03:17 UTC)
