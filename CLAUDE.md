@@ -23,7 +23,7 @@ docker build --build-arg VERSION=3.3.0 -t noip-duc .
 docker run --rm noip-duc --help
 docker run -d --env-file noip-duc.env --name noip-duc noip-duc
 
-# Compose (compose.yaml still uses upstream's unpatched ghcr.io/noipcom/noip-duc:latest, not this fork's image)
+# Compose (uses the published ghcr.io/tgcentral/noip-duc:latest image, not the local build)
 docker compose up
 ```
 
@@ -37,6 +37,6 @@ docker compose up
 The version is hardcoded in three places, and they must stay in sync:
 1. `Dockerfile`: `ARG VERSION=` in the builder stage
 2. `Dockerfile`: `ARG VERSION=` in the runtime stage (used in the `COPY --from=builder` path)
-3. `.github/workflows/deploy.yml`: `env.VERSION` (sets the image tags; the README badges still point at upstream `noipcom`, not this fork). Reset `env.PATCH` to `p1` on a version bump, and increment it for rebuilds of the same version.
+3. `.github/workflows/deploy.yml`: `env.VERSION` (sets the image tags; the README version badge also reads this value). Reset `env.PATCH` to `p1` on a version bump, and increment it for rebuilds of the same version.
 
 The Rust base image (`rust:1.87.0-slim-bookworm`) may need bumping if the new upstream release needs a newer toolchain.

@@ -1,11 +1,10 @@
 # No-IP Linux DUC for Docker
 <div align="center">
 
-![Version](https://img.shields.io/badge/dynamic/yaml?url=https://raw.githubusercontent.com/noipcom/linux-update-client-docker/main/.github/workflows/deploy.yml&query=$.env.VERSION&label=version&style=for-the-badge&color=#8fbe00)
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/noipcom/linux-update-client-docker/deploy.yml?style=for-the-badge)
+![Version](https://img.shields.io/badge/dynamic/yaml?url=https://raw.githubusercontent.com/tgcentral/linux-update-client-docker/main/.github/workflows/deploy.yml&query=$.env.VERSION&label=version&style=for-the-badge&color=#8fbe00)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/tgcentral/linux-update-client-docker/deploy.yml?style=for-the-badge)
 ![Platform](https://img.shields.io/badge/platform-docker-blue?style=for-the-badge)
-![Docker Pulls](https://img.shields.io/docker/pulls/noipcom/noip-duc?style=for-the-badge)
-![GitHub License](https://img.shields.io/github/license/noipcom/linux-update-client-docker?style=for-the-badge&color=#8fbe00)
+![GitHub License](https://img.shields.io/github/license/tgcentral/linux-update-client-docker?style=for-the-badge&color=#8fbe00)
 
 **🚀 Automated Dynamic DNS Updates Made Simple**
 
@@ -14,6 +13,12 @@
 </div>
 
 ---
+
+> 🔒 **About this fork**
+>
+> This is a fork of [noipcom/linux-update-client-docker](https://github.com/noipcom/linux-update-client-docker). The upstream image `ghcr.io/noipcom/noip-duc` is built on a Debian base that hasn't been rebuilt since its last release, so vulnerability scanners flag Critical/High CVEs in its OS packages (OpenSSL, GnuTLS, PCRE2, PAM, Perl and others). The findings are all in Debian packages, not in the No-IP client code.
+>
+> This fork builds the same No-IP client, but installs the latest Debian security updates into the image at build time. It rebuilds weekly so new fixes are picked up automatically, and publishes to `ghcr.io/tgcentral/noip-duc`. Each build is tagged `:latest` and `:<version>-<YYYYMMDD>`. See [docs/plan-option-a.md](docs/plan-option-a.md) for the background.
 
 ## 📋 Description
 The No-IP update client for Docker is a handy tool that automates the process of keeping your dynamic IP address in sync with your No-IP hostname(s). In simpler terms, it helps you make sure that your domain name (like `camera.ddns.net`) always points to your current IP address.
@@ -25,7 +30,7 @@ The No-IP update client for Docker is a handy tool that automates the process of
 ### 1. Pull the docker container from Github Container Registry (GHCR)
 
 ``` bash
-docker pull ghcr.io/noipcom/noip-duc:latest
+docker pull ghcr.io/tgcentral/noip-duc:latest
 ```
 
 ### 2. Create Your Configuration
@@ -46,7 +51,7 @@ NOIP_HOSTNAMES=all.ddnskey.com
 ### 3. Run the Container
 
 ```bash
-docker run -d --env-file noip-duc.env --name noip-duc ghcr.io/noipcom/noip-duc:latest
+docker run -d --env-file noip-duc.env --name noip-duc ghcr.io/tgcentral/noip-duc:latest
 ```
 
 > 💡 **Pro Tip**: Run `docker run noip-duc --help` to see all available environment variables and options.

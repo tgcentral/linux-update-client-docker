@@ -3,7 +3,7 @@
 services:
   noip-duc:
     container_name: noip-duc
-    image: ghcr.io/noipcom/noip-duc:latest
+    image: ghcr.io/tgcentral/noip-duc:latest
     env_file: noip-duc.env
     restart: unless-stopped
     networks:
